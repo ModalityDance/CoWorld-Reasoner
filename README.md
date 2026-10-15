@@ -1,548 +1,228 @@
-> [!NOTE]
-> 🪐 **Internal Template Notice (v1.1)**  
->  
-> This README serves as a **demonstration template (version 1.1)** for internal use within the **ModalityDance**.  
->  
-> **Administrator:** [Hongru Cai](mailto:henry.hongrucai@gmail.com)
->
-> **Update date**: 2026.1.9
->  
-> **Usage scope:** Internal use only. Please do not redistribute or share externally.
-> 
-> If you have questions, suggestions, or proposed improvements to this template, feel free to contact me.
-> 
-> Use GitHub callouts (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`) **selectively** to help readers understand critical information.
-> 
-> Some componets may not render properly in VS Code preview, copy to preview on GitHub if needed.
-
-> [!IMPORTANT]
-> 🪐 **About This Template**  
->  
-> This template provides a **minimal, example-based framework** for releasing research code.  
-> It is intentionally lightweight and designed to be extended with additional components, including:
-> - more demos or runnable examples,
-> - interactive or web-based interfaces,
-> - detailed documentation or tutorials,
-> - PyPI packages or other distribution formats,
-> - or any other project-specific features.
-
-> [!TIP]
-> 🪐 **Customization & Extension**  
->  
-> All visual elements (e.g., icons, styles, figures, layouts) are **fully customizable**.  
-> Feel free to replace or redesign them to better fit your project.
-
-> [!WARNING]
-> 🪐 **Before Public Release**  
-> 
-> - Ensure that the final README contains only **project-specific content**.  
-> - Verify that **all links are clickable and correctly resolved** (paper, code, data, demos).  
-> - Check that **all figures and images render correctly** (paths, formats, and visibility).  
-> - Confirm that the **citation section is complete and up to date**, and matches the final paper version.  
-> - Confirm that a **LICENSE file is present**, and that the information inside the file is accurate.  
-> - Verify that the **project page link is correct and up to date**.
-> - Check that the **News section is current**, and remove any placeholder entries.
-> - Please **remove all instructional comments and internal notes** in this README. 
-
-
-
 <a name="readme-top"></a>
 
 <div align="center">
-  <img src="./assets/LOGO.png" alt="Project Logo" width="300">
-  <h1 align="center">Project Name: Short tagline</h1>
+  <img src="./docs/assets/coworld-reasoner-icon.png" alt="CoWorld Reasoner" width="150">
+  <h1>CoWorld Reasoner: Agentic Multimodal Reasoning with the Evolving Video World Model-Driven Harness</h1>
+  <a href="https://modalitydance.github.io/CoWorld-Reasoner/"><img src="https://img.shields.io/badge/Project-Page-6a5acd?style=for-the-badge" alt="Project Page"></a>
+  <a href="https://huggingface.co/datasets/ModalityDance/CoWorld-Reasoner-Dev"><img src="https://img.shields.io/badge/Hugging%20Face-Data-fcc21b?style=for-the-badge&logo=huggingface&logoColor=white" alt="Hugging Face Data"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License"></a>
 </div>
 
-<div align="center">
-
-  <!-- Project Page -->
-  <a href="{project_page_url}">
-    <img src="https://img.shields.io/badge/Project-Page-6a5acd?style=for-the-badge" alt="Project Page">
-  </a>
-
-  <!-- Paper Link -->
-  <a href="{paper_url}">
-    <img src="https://img.shields.io/badge/Paper-arXiv-b31b1b?style=for-the-badge&logo=arxiv" alt="Paper">
-  </a>
-
-  <!-- HuggingFace Models -->
-  <a href="{huggingface_url}">
-    <img src="https://img.shields.io/badge/HuggingFace-Models-fcc21b?style=for-the-badge&logo=huggingface&logoColor=white" alt="HF Models">
-  </a>
-
-  <!-- Optional Dataset Badge -->
-  <a href="{dataset_url}">
-    <img src="https://img.shields.io/badge/Dataset-Available-4c1?style=for-the-badge" alt="Dataset">
-  </a>
-
-  <!-- Optional Community Badges -->
-  <a href="{slack_or_discord_or_feishu}">
-    <img src="https://img.shields.io/badge/Community-Join-07c160?style=for-the-badge&logo=wechat&logoColor=white" alt="Community">
-  </a>
-
-</div>
-
-
-<!--
-Overview
-
-Points:
-
-1. A short paragraph (2–4 sentences) describing:
-    - What the project is.
-    - The main purpose or capability.
-    - What benefit users get.
-    - The scope or application scenario.
-    - The primary components included in this repository.
-
-2. A "Key Features" section.  
-   Each feature should include:
-    - A short title (e.g., "Modular Design", "Fast Training").
-    - A 1–2 sentence explanation of what the feature provides and why it matters.
-   
-3. Add more sections if needed.
-
-4. A main figure image placed under assets/, e.g., assets/overview.png.  
-   This image should visually summarize the system or framework.
-
--->
-
-Welcome to **Project Name**! 👋Project Name is a flexible and scalable framework designed for **core purpose, e.g., multimodal retrieval, generative search, LLM-based reasoning**.  It offers a clean and modular design, making it easy for researchers and developers to build, extend, and evaluate advanced models and pipelines. This project provides an implementation of {main contribution or goal}, including training scripts, evaluation pipelines, and optional demo resources.
-
+**CoWorld Reasoner** uses a video world model (VWM) to explore visual evidence
+beyond the observed images. Its **Video World Model-Driven Harness** guides a
+multimodal agent in requesting and interpreting this evidence to answer questions.
+**VLM-VWM Harness Co-Evolution** improves the harness through stage-wise execution
+feedback while keeping the weights of both models fixed.
 
 ### 🪐 Key Features
 
-🧭 **Feature 1 Title**  
-Describe the core capability enabled by this feature and its role in the overall system.
-
-🌌 **Feature 2 Title**  
-Explain how this component improves effectiveness, efficiency, or modeling flexibility.
-
-🧩 **Feature 3 Title**  
-Describe how this design choice supports extensibility, ablation, or future research.
-
-
-
-### More sections if you want ...
-
+- **Unified visual reasoning engine.** One video world model supports diverse visual reasoning needs.
+- **Agentic visual imagination.** The agent decides whether to imagine, which operation to request, and how to use the resulting evidence.
+- **Evolving harness.** Execution experience improves VLM–VWM interaction by actively revising the agent harness.
 
 <div align="center">
-  <figure>
-    <img src="./assets/overview.png" alt="Overview" style="max-width: 100%; height: auto;">
-    <br>
-    <figcaption><em>Quick Overview of Project Name.</em></figcaption>
-  </figure>
+  <a href="https://modalitydance.github.io/CoWorld-Reasoner/#abstract"><img src="./docs/assets/motivation.png" alt="Let's think in the visual world: view change, interpolation, continuation, and intervention illustrated with questions, observed images, generated frames, and answers." width="100%"></a>
+  <p><em>Thinking beyond observed images through video world models.</em></p>
 </div>
 
+## 📑 Table of Contents
 
-<!--
-News 
-
-Points:
-1. Include chronological updates about the project.
-2. Each news entry should have:
-   - A date in [YYYY.MM] or [YYYY, MMM DD] format.
-   - A short highlight sentence.
-3. Optional but encouraged:
-   - Bullet lists for detailed updates.
-   - Links to papers, project pages, demos, datasets.
-   - Emojis to increase readability.
-
--->
-
-## 🔥 News 
-
-<div style="max-height: 240px; overflow-y: auto;">
-
-- **[2025.xx]** 📢📢 Exciting news! Our project has been accepted as a Spotlight paper at NeurIPS 2025!
-
-- **[2025.xx]** 🎉🎉 We released a major upgrade including new benchmarks, UI, and documentation.
-  - 📄 Paper: <a href="{paper_link}">arXiv</a>
-  - 📊 Benchmark Suite: <a href="{benchmark_link}">Link</a>
-  - 🖥️ Web UI: {description}
-
-- **[2025.xx]** 🎉🎉Initial release of the project.
-
-</div>
-
-
-<!--
-Table of Contents
-
-REQUIRED:
-1. Quick Start
-2. How It Works (Method / Framework Overview)
-3. Community
-4. Acknowledgements
-5. Citation
-
-OPTIONAL:
-1. Documentation
-2. TODO List / Roadmap
-3. Examples
-4. How to Use
-5. More sections as needed.
-
--->
-
-## 📑 Table of Contents <span id="table-of-contents"></span>
-
-
-* <a href='#quick-start'>🚀 Quick Start</a>
-  * <a href='#installation'>Installation</a>
-  * <a href='#data'>Data</a>
-  * <a href='#running'>Running</a>
-* <a href='#usage-example'>🧪 Usage Example</a>
-<!-- * <a href='#examples'>⬇️ Examples</a> -->
-* <a href='#how-it-works'>✨ How It Works</a>
-<!-- * * <a href='#documentation'>📖 Documentation</a> -->
-<!-- * <a href='#todo'>📝 TODO List</a> -->
-* <a href='#community'>🤝 Community</a>
-* <a href='#acknowledgements'>🌱 Acknowledgements</a>
-* <a href='#citation'>📚 Citation</a>
-
-
-<!--
-Quick Start (Very Detailed Guide)
-
-REQUIRED:
-1. Environment Installation
-   - Must include conda or virtualenv setup.
-   - Must include Python version requirements.
-   - Must list installation commands (pip or requirements.txt).
-   - Must include GPU/CPU dependency notes if necessary.
-
-2. Dataset Preparation
-   - Instructions for downloading datasets.
-   - Show expected folder structure.
-   - Provide scripts if applicable.
-   - If dataset is on HuggingFace, include "huggingface-cli" usage.
-
-3. Run the Project
-   - Must include detailed commands to run training and/or inference.
-   - Should include training or inference example.
-   - Should be copy-paste friendly.
-   - Must can replicate your main results using these instructions.
-
-OPTIONAL:
-1. API Keys Setup
-   - Required only if project calls external APIs (OpenAI, HF Inference, etc.).
-   - Provide environment variable examples: export, .env file, etc.
-
-2. Pretrained Checkpoints
-   - Links to ckpts (HF Hub, Google Drive, etc.)
-   - Instructions for loading the checkpoint.
-
-3. Launch UI / Demo
-   - Streamlit, Gradio, Web UI—add steps if relevant.
-
-4. Additional Examples
-   - Python code snippets, CLI examples, or config-based usage.
-
-5. Other points as needed.
-
--->
+- [🚀 Quick Start](#quick-start)
+  - [1. Installation](#installation)
+  - [2. Data](#data)
+  - [3. Running](#running)
+    - [Evolved harness](#evolved-harness)
+    - [Co-evolution](#co-evolution)
+    - [Evaluation](#evaluation)
+- [✨ How It Works](#how-it-works)
+- [🌱 Acknowledgements](#acknowledgements)
+  - [🔗 Related Projects](#related-projects)
 
 ## 🚀 Quick Start <span id="quick-start"></span>
 
-
 ### 1. Installation <span id="installation"></span>
 
-#### **Conda (recommended)**
+Requirements: Python 3.10+, Git, Node.js 20+, and the Codex CLI.
+Models run through hosted VLM and FAL APIs; no local GPU is required.
 
 ```bash
-conda create -n {env_name} python=3.10 -y
-conda activate {env_name}
-pip install -r requirements.txt
+git clone https://github.com/ModalityDance/CoWorld-Reasoner.git
+cd CoWorld-Reasoner
+python -m venv .venv
 ```
 
-#### **Pip + Virtualenv**
+Activate the virtual environment, then install the dependencies:
 
-```bash
-python3 -m venv {env_name}
-source {env_name}/bin/activate
-pip install -r requirements.txt
+```shell
+python -m pip install -r requirements.txt
+npm install -g @openai/codex@0.153.4
 ```
 
-#### **Hardware Requirements (recommended to fill)**
+Copy `.env.example` to `.env` and set:
 
-* GPU: **{e.g., 16GB VRAM minimum}**
-* Python: **3.9 / 3.10**
-* CUDA: **{version}**
-* Frameworks: **PyTorch {version}, Transformers {version}, etc.**
+| Variable | Value |
+| --- | --- |
+| `AGENTIC_VLM_BASE_URL` | Your OpenAI-compatible endpoint |
+| `AGENTIC_VLM_API_KEY` | Its API key |
+| `AGENTIC_VLM_MODEL` | Your model deployment |
+| `FAL_KEY` | Your FAL API key for MiniMax H3 Max Turbo |
 
+Use an OpenAI-compatible endpoint with the Responses API, image input, function
+calling, and structured JSON output. The answer judge uses the same model and
+endpoint by default; `COEVOLVE_JUDGE_*` settings override them.
 
-### 2. Data Preparation <span id="data"></span>
+### 2. Data <span id="data"></span>
 
-#### **Download datasets**
+#### Development data
 
-```bash
-bash scripts/download_data.sh
+The [development data](https://huggingface.co/datasets/ModalityDance/CoWorld-Reasoner-Dev)
+contain 30 examples each from MMSI-Bench, SpinBench, CausalSpatial, and PerceptionBench,
+with 244 images. Download them from the repository root:
+
+```shell
+python download_data.py
 ```
 
-or download manually from:
+Questions are in `data/dev120/public.jsonl`; reference answers are in
+`scorer_bundle/data/dev120_evaluator_only.jsonl`.
 
-* {dataset_source_1}
-* {dataset_source_2}
+#### Benchmark evaluation
 
-#### **Expected folder structure**
+Download the original benchmarks linked below and exclude the development items,
+matching questions and ordered images against `data/dev120/public.jsonl`.
 
-```plaintext
-data/
-  ├── train/
-  ├── val/
-  ├── test/
-  └── metadata.json
+| Benchmark | Development items excluded | Evaluation items | Answer format |
+| --- | ---: | ---: | --- |
+| [MMSI-Bench](https://arxiv.org/abs/2505.23764v3) | 30 | 970 | Multiple choice |
+| [SAT](https://arxiv.org/abs/2412.07755) | 0 | 300 | Multiple choice |
+| [SpinBench](https://arxiv.org/abs/2509.25390) | 30 | 2,709 | Multiple choice |
+| [SpatiaLab](https://arxiv.org/abs/2602.03916) | 0 | 1,400 per format | Multiple choice / Open answer |
+| [ERQA](https://arxiv.org/abs/2503.20020) | 0 | 400 | Multiple choice |
+| [CausalSpatial](https://arxiv.org/abs/2601.13304) | 30 | 1,395 | Multiple choice |
+| [PerceptionBench](https://arxiv.org/abs/2607.24957) | 30 | 2,970 | Benchmark question format |
+
+SAT uses two option permutations per question, each with its own ID and reference
+letter. SpatiaLab evaluates the same questions in MCQ and Open formats.
+
+#### Input format
+
+Create an input JSONL file with one task per line. Preserve the original
+question, option order, and ordered image references. Use unique, filename-safe
+sample IDs; image paths are relative to `--input-root` or absolute.
+
+```json
+{"sample_id":"scene-001","benchmark":"Example","question":"Compare Picture 1 and Picture 2. Which object moved? A. cup B. box","image_paths":["images/before.jpg","images/after.jpg"]}
 ```
 
-#### **Optional: preprocess data**
+Array order defines Picture 1, Picture 2, and the tools' zero-based source indices.
+For interleaved text and images, set `"interleaved_observations": true` and place
+`[[observed_00]]`, `[[observed_01]]`, etc. at the corresponding positions in the question.
 
-```bash
-python scripts/preprocess.py --input data/raw --output data/processed
+Store reference answers in a separate JSONL file with matching sample IDs:
+
+```json
+{"sample_id":"scene-001","benchmark":"Example","question":"Compare Picture 1 and Picture 2. Which object moved? A. cup B. box","answer":"B","score_spec":{"type":"normalized_exact_match"}}
 ```
 
+| Answers | `score_spec.type` |
+| --- | --- |
+| Multiple choice | `normalized_exact_match` |
+| PerceptionBench | `perceptionbench_official_general_qa_judge_v1` |
+| SpatiaLab Open | `extended_short_answer_judge_v1` |
+
+PerceptionBench uses option matching when possible and a general-QA judge otherwise;
+SpatiaLab Open uses semantic-equivalence judging.
 
 ### 3. Running <span id="running"></span>
 
-#### **Basic inference**
+#### Evolved harness <span id="evolved-harness"></span>
 
-```bash
-python scripts/inference.py --input example.txt --output result.json
+Evaluation uses the released `evolved_harness/`. Co-evolution starts from the
+same harness and writes the selected result into its output directory.
+
+The harness contains the reusable skills, stage guidance, visual tools, and
+verifier; `runtime/` carries ordered histories and media between stages.
+
+By default, each task can make one VWM generation request. `--retakes 1` allows
+one additional attempt for the same operation.
+
+#### Co-evolution <span id="co-evolution"></span>
+
+Run co-evolution on Dev120:
+
+```shell
+python co_evolution.py --input-jsonl data/dev120/public.jsonl --input-root data/dev120 --output-root runs/coevolve --env-file .env
 ```
 
-#### **Training example**
+The default is three rounds, with up to five revisions per stage and early stopping.
+Use `--evolution-rounds 1` for one complete round.
 
-```bash
-bash scripts/train.sh
+The supervisor uses Codex to inspect completed interactions and revise skills, stage
+instructions, tool and verifier guidance, and execution code. It evaluates candidate
+revisions at each stage, retains the selected candidate, and carries it into the next
+stage.
+
+The output directory contains stage records, generated media, scores, and
+`RUN_RESULT.json`. Resume an interrupted run with `--resume`.
+
+#### Evaluation <span id="evaluation"></span>
+
+Evaluate all 120 development examples with the evolved harness:
+
+```shell
+python evaluate.py --input-jsonl data/dev120/public.jsonl --input-root data/dev120 --output-root runs/eval --env-file .env
 ```
 
-or
+Development examples are scored using the downloaded reference answers. For other
+benchmarks, supply a reference-answer JSONL file:
 
-```bash
-python train.py --config configs/default.yaml
+```shell
+python evaluate.py --input-jsonl data/benchmarks/mmsi/public.jsonl --input-root data/benchmarks/mmsi --evaluator-jsonl data/benchmarks/mmsi/evaluator.jsonl --output-root runs/mmsi --env-file .env
 ```
 
-#### **Evaluation**
+After co-evolution, evaluation uses the selected harness. Reference answers are
+optional for custom inputs; provide them to compute scores.
 
-```bash
-python evaluate.py --checkpoint checkpoints/{ckpt_name}.pt
-```
+Final answers are in `p4/records.jsonl`; `p4/SCORING.json` contains per-sample
+scores and aggregate accuracy. The paper's overall average is item-weighted:
+sum correct counts across all eight evaluation columns and divide by their total item count.
 
-
-#### 4. Other optional setups
-
-## 🧪 Usage Example <span id="usage-example"></span>
-
-This section provides a **minimal end-to-end example** showing how to use the core model or method in this project.
-The goal is to demonstrate the **intended usage pattern**, not to expose full training or implementation details.
-
-A typical usage example should include the following steps:
-
-1. **Load a pretrained base model or encoder** (if applicable).
-2. **Prepare a small set of task-specific examples**.
-3. **Run inference** on new inputs and inspect the outputs.
-
-Below is a simplified template illustrating this workflow.
-
-```python
-# 1) Load base model / encoder
-base_model = load_base_model("path/to/pretrained/model")
-
-# 2) Prepare a few example inputs (e.g., preference pairs, queries, prompts)
-support_examples = [
-    {
-        "input": "...",
-        "preferred_output": "...",
-        "non_preferred_output": "..."
-    }
-]
-
-# 3) (Optional) Adapt the model to the examples
-adapted_model = adapt_model(
-    base_model,
-    support_examples,
-    num_steps=K,
-    learning_rate=LR,
-)
-
-# 4) Run inference on new inputs
-test_input = "..."
-result = adapted_model(test_input)
-
-print(result)
-```
-> [!Note]
-> You can use the same example in HuggingFace model card, or Project Page.
-<!--
-How It Works (Methods Overview)
-
-
-GOALS OF THIS SECTION:
-1. Provide a clear and brief explanation of how the system or method works.
-2. Make this understandable even for readers who do not yet know the technical details.
-
-Points:
-1. A high-level description of the system architecture or method.
-2. Key components/modules and their roles.
-3. A step-by-step workflow of the main process.
-4. Figures or diagrams to illustrate the method.
-
-Or:
-
-you can organize in your own way as long as it meets the goals above!!!
-
--->
+Set `--workers N` to adjust concurrency. Use a new output directory when changing
+the input or model configuration; see `--help` for the available options.
 
 ## ✨ How It Works <span id="how-it-works"></span>
 
-🪐 **Project Name** is built around a modular research pipeline for **{core capability}**, where each component corresponds to a well-defined stage in the overall method.  
-The system separates representation, reasoning, and output stages into independent modules, allowing controlled experimentation and analysis.  
-This design enables flexible replacement of individual components without affecting the rest of the pipeline.
-
-At a high level, the workflow proceeds as follows:
-
-1. **{Step 1: Input processing}** — {Describe how raw inputs are converted into model-friendly representations.}  
-2. **{Step 2: Core algorithm or modeling stage}** — {Explain how the main computation or retrieval happens.}  
-3. **{Step 3: Final output generation}** — {Describe how results are composed, ranked, or produced.}
-
 <div align="center">
-  <figure>
-    <img src="./assets/{method-figure.png}" alt="Method Overview" style="max-width: 100%; height: auto;">
-    <br>
-    <figcaption><em>Method overview of {Project Name}.</em></figcaption>
-  </figure>
+  <a href="./docs/assets/method.svg"><img src="./docs/assets/method.svg" alt="CoWorld Reasoner's VWM-driven tools and skills, four reasoning stages, and supervisor-guided harness co-evolution." width="100%"></a>
+  <p><em>Overview of the Video World Model-Driven Harness and VLM–VWM Harness Co-Evolution.</em></p>
 </div>
 
+## 🌱 Acknowledgements <span id="acknowledgements"></span>
 
-<!--
-Community
+We thank the authors and maintainers of the benchmarks and video world
+models used in this project:
 
-REQUIRED:
-1. Contributors section or GitHub contributors graph.
-2. Star history chart.
-3. A short paragraph encouraging engagement with the project.
+[![MMSI-Bench](https://img.shields.io/badge/MMSI--Bench-Benchmark-4c8c72)](https://arxiv.org/abs/2505.23764v3)
+[![SAT](https://img.shields.io/badge/SAT-Benchmark-4c8c72)](https://arxiv.org/abs/2412.07755)
+[![SpinBench](https://img.shields.io/badge/SpinBench-Benchmark-4c8c72)](https://arxiv.org/abs/2509.25390)
+[![SpatiaLab](https://img.shields.io/badge/SpatiaLab-Benchmark-4c8c72)](https://arxiv.org/abs/2602.03916)
+[![Gemini Robotics / ERQA](https://img.shields.io/badge/Gemini_Robotics_%2F_ERQA-Benchmark-4c8c72)](https://arxiv.org/abs/2503.20020)
+[![CausalSpatial](https://img.shields.io/badge/CausalSpatial-Benchmark-4c8c72)](https://arxiv.org/abs/2601.13304)
+[![PerceptionBench](https://img.shields.io/badge/PerceptionBench-Benchmark-4c8c72)](https://arxiv.org/abs/2607.24957)
+[![MiniMax H3](https://img.shields.io/badge/MiniMax_H3-Video_Model-6a5acd)](https://www.minimax.io/blog/minimax-h3)
+[![LTX-Video](https://img.shields.io/badge/LTX--Video-Video_Model-6a5acd)](https://arxiv.org/abs/2501.00103)
 
-OPTIONAL:
-1. Social groups (Slack, Discord, WeChat, Feishu).
-2. Issue tracker link (GitHub Issues).
-3. Contribution guidelines (link to CONTRIBUTING.md if exists).
+Code is distributed under the [MIT license](LICENSE). Third-party models,
+datasets, and dependencies retain their own licenses.
 
--->
+### 🔗 Related Projects <span id="related-projects"></span>
 
-## 🤝 Join the Community <span id="community"></span>
-
-We welcome researchers, developers, and enthusiasts to join the **Project Name** community.  
-You can participate by reporting issues, contributing features, or sharing feedback to help us improve and grow the project. 
-
-<!-- Optional social groups -->
-<!-- - <a href="{slack_link}">Join our Slack workspace</a> — Ideal for research discussions and development updates.  
-- <a href="{discord_link}">Join our Discord server</a> — Community-driven space for questions, ideas, and feedback.  
-- <a href="{wechat_or_feishu_link}">Join our WeChat / Feishu group</a> — Regional/community group (optional).   -->
-
-<div align="center">
-
-<!-- Contributors -->
-**We thank all our contributors for their valuable contributions.**
-<a href="https://github.com/xxx/xxx/contributors">
-  <img src="https://contrib.rocks/image?repo=xxx/xxx" />
-</a>
-
-<br/><br/>
-
-<!-- Star history chart -->
-[![Star History Chart](https://api.star-history.com/svg?repos=xxx/xxx&type=Date)](https://star-history.com/xxx/xxx&Date)
-
-</div>
-
-
-<!--
-Acknowledgements & Citation
-
-
-ACKNOWLEDGEMENTS:
-1. Credit any external libraries, toolkits, or frameworks the project depends on.
-2. Cite related repositories if this project builds upon or is inspired by them.
-3. Acknowledge dataset sources if used.
-4. Claim on licensing or usage rights.
-  1. MIT License (default):
-     Use this for most research code releases when no usage restrictions are required.
-  2. Apache License 2.0:
-     Use this for larger frameworks or systems when explicit patent protection is desired.
-  3. Non-Commercial (NC):
-     Use this only when the project or data must restrict commercial usage.
-5. Acknowledge funding, labs, collaborators, or mentors (optional).
-
-
-CITATION:
-1. Provide BibTeX for the project’s paper.
-2. If the paper is not yet published, use an arXiv placeholder.
-
--->
-
-
-## 🌱 **Acknowledgements** <span id="acknowledgements"></span>
-
-An example: We would like to thank the contributors, open-source projects, and research communities whose work made **{Project Name}** possible. This project builds upon ideas, tools, and datasets developed by the broader machine learning and information retrieval ecosystem. 
-
-This project is licensed under the **License Name**. Please refer to the LICENSE file for more details.
-
-### 🔗 Related Projects
-
-> [!Note]
-> Please prioritize our own related papers. If additional projects are needed, refer to previous papers by group members to check whether they are directly relevant or comparable.
-
+[![Thinking with Video](https://img.shields.io/badge/Thinking_with_Video-Paper-527f99)](https://openaccess.thecvf.com/content/CVPR2026/html/Tong_Thinking_with_Video_Video_Generation_as_a_Promising_Multimodal_Reasoning_CVPR_2026_paper.html)
+[![Omni-R1](https://img.shields.io/badge/Omni--R1-Paper-527f99)](https://aclanthology.org/2026.findings-acl.1937/)
+[![MindJourney](https://img.shields.io/badge/MindJourney-Paper-527f99)](https://papers.nips.cc/paper_files/paper/2025/file/9e3b203e72c4e058de26d02a92a81844-Paper-Conference.pdf)
+[![AVIC](https://img.shields.io/badge/AVIC-Paper-527f99)](https://arxiv.org/abs/2602.08236v2)
 
 <div align="center">
-
-<table>
-<tr>
-<td align="center">
-  <b>🌟 Related Project 1</b><br/>
-  <a href="{project_link_1}">{project_link_1}</a>
-</td>
-<td align="center">
-  <b>🚀 Related Project 2</b><br/>
-  <a href="{project_link_2}">{project_link_2}</a>
-</td>
-<td align="center">
-  <b>🔧 Related Project 3</b><br/>
-  <a href="{project_link_3}">{project_link_3}</a>
-</td>
-</tr>
-</table>
-
-</div>
-
-
-## 📚 **Citation** <span id="citation"></span>
-
-If you use **{Project Name}** in your research or applications, please consider citing:
-
-```bibtex
-@article{yourproject2025,
-  title        = {{Project Name}: {Short descriptive subtitle}},
-  author       = {Your Name and Collaborator Name and Others},
-  journal      = {arXiv preprint arXiv:{xxxx.xxxxx}},
-  year         = {2025}
-}
-```
-
-<!-- Modify the repository URL accordingly. -->
-
-<div align="center">
-
-<a href="https://github.com/{github_org}/{repo_name}">
-  <img src="https://img.shields.io/badge/⭐ Star%20us%20on%20GitHub-181717?style=for-the-badge&logo=github&logoColor=white" />
-</a>
-
-<a href="https://github.com/{github_org}/{repo_name}/issues">
-  <img src="https://img.shields.io/badge/🐞 Report%20Issues-e74c3c?style=for-the-badge&logo=github" />
-</a>
-
-<a href="https://github.com/{github_org}/{repo_name}/discussions">
-  <img src="https://img.shields.io/badge/💬 Discussions-20c997?style=for-the-badge&logo=github" />
-</a>
-<br/>
-⭐ <b>Thank you for visiting {Project Name}!</b> ⭐
-
+  <a href="https://github.com/ModalityDance/CoWorld-Reasoner"><img src="https://img.shields.io/badge/Star_us_on_GitHub-181717?style=for-the-badge&logo=github" alt="Star on GitHub"></a>
+  <a href="https://github.com/ModalityDance/CoWorld-Reasoner/issues"><img src="https://img.shields.io/badge/Report_Issues-e74c3c?style=for-the-badge&logo=github" alt="Report issues"></a>
 </div>

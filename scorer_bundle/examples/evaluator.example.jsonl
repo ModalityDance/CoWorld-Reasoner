@@ -1,0 +1,2 @@
+{"sample_id":"example-choice","benchmark":"Example","question":"Which option? A. first B. second","answer":"B","score_spec":{"type":"normalized_exact_match"}}
+{"sample_id":"example-open-choice","benchmark":"Example","question":"How many?\nA. one\nB. two","answer":"B","score_spec":{"type":"perceptionbench_official_general_qa_judge_v1"}}

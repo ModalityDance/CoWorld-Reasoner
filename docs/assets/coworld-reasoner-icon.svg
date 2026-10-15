@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">CoWorld Reasoner</title>
+  <desc id="desc">A harness loop connects an image-text semantic world to a dynamic visual world through a structured reasoning graph.</desc>
+  <defs>
+    <clipPath id="sceneA"><rect x="798" y="188" width="126" height="112" rx="18"/></clipPath>
+    <clipPath id="sceneB"><rect x="876" y="164" width="142" height="128" rx="18"/></clipPath>
+    <clipPath id="sceneC"><rect x="964" y="140" width="154" height="140" rx="18"/></clipPath>
+  </defs>
+
+  <!-- the harness: two clean, connected loops around the two worlds -->
+  <path d="M486 260 H714" fill="none" stroke="#27324a" stroke-width="16" stroke-linecap="round"/>
+  <rect x="132" y="112" width="466" height="296" rx="148" fill="none" stroke="#27324a" stroke-width="16"/>
+  <rect x="602" y="112" width="466" height="296" rx="148" fill="none" stroke="#27324a" stroke-width="16"/>
+  <!-- short traces keep the co-evolution cue without adding loose curves -->
+  <path d="M214 141 C256 122 302 118 344 124" fill="none" stroke="#e47b68" stroke-width="5" stroke-linecap="round"/>
+  <path d="M856 396 C898 402 944 398 986 379" fill="none" stroke="#4faeb8" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- semantic visual world: aligned image and language tokens -->
+  <g stroke="#27324a" stroke-width="4" stroke-linejoin="round">
+    <rect x="170" y="177" width="184" height="140" rx="18" fill="#f7f1e8"/>
+    <path d="M187 284 L238 230 L278 262 L313 220 L337 284Z" fill="#a8c3c7" stroke="none"/>
+    <circle cx="294" cy="211" r="13" fill="#e47b68" stroke="none"/>
+    <path d="M187 284 H337" fill="none" stroke="#27324a" stroke-width="3"/>
+    <rect x="290" y="231" width="186" height="120" rx="18" fill="#fffdfa"/>
+    <path d="M318 267 H431 M318 291 H450 M318 315 H405" fill="none" stroke="#27324a" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="455" cy="267" r="8" fill="#e47b68" stroke="none"/>
+    <circle cx="474" cy="291" r="8" fill="#4faeb8" stroke="none"/>
+    <path d="M344 317 C382 342 420 342 462 315" fill="none" stroke="#4faeb8" stroke-width="4"/>
+  </g>
+  <g fill="#e47b68" stroke="#27324a" stroke-width="3">
+    <circle cx="382" cy="208" r="8"/>
+    <circle cx="432" cy="381" r="8"/>
+  </g>
+  <path d="M354 247 C374 231 382 218 382 208 M431 315 C431 344 432 360 432 381" fill="none" stroke="#e47b68" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- reasoning bridge: one quiet, horizontal merge between the two worlds -->
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <path d="M474 267 H612" fill="none" stroke="#e47b68" stroke-width="8"/>
+    <path d="M474 315 H612" fill="none" stroke="#4faeb8" stroke-width="8"/>
+    <rect x="612" y="264" width="76" height="54" rx="27" fill="#27324a"/>
+    <circle cx="638" cy="291" r="5" fill="#f7f1e8"/>
+    <circle cx="651" cy="291" r="5" fill="#e47b68"/>
+    <circle cx="664" cy="291" r="5" fill="#4faeb8"/>
+    <path d="M688 291 H770" fill="none" stroke="#27324a" stroke-width="8"/>
+    <path d="M758 281 L770 291 L758 301" fill="none" stroke="#27324a" stroke-width="6"/>
+    <circle cx="474" cy="267" r="7" fill="#e47b68"/>
+    <circle cx="474" cy="315" r="7" fill="#4faeb8"/>
+  </g>
+
+  <!-- dynamic visual world: the same scene unfolding across frames -->
+  <g stroke="#27324a" stroke-width="4" stroke-linejoin="round">
+    <rect x="798" y="188" width="126" height="112" rx="18" fill="#e8f1ef"/>
+    <rect x="876" y="164" width="142" height="128" rx="18" fill="#e8f1ef"/>
+    <rect x="964" y="140" width="154" height="140" rx="18" fill="#e8f1ef"/>
+  </g>
+  <g clip-path="url(#sceneA)">
+    <path d="M780 275 L834 230 L868 256 L897 222 L950 275Z" fill="#a8c3c7"/>
+    <circle cx="881" cy="216" r="12" fill="#e47b68"/>
+    <path d="M780 275 H950" stroke="#27324a" stroke-width="3"/>
+  </g>
+  <g clip-path="url(#sceneB)">
+    <path d="M860 287 L914 229 L956 263 L987 216 L1040 287Z" fill="#8fb9bd"/>
+    <circle cx="978" cy="199" r="14" fill="#e47b68"/>
+    <path d="M858 287 H1040" stroke="#27324a" stroke-width="3"/>
+  </g>
+  <g clip-path="url(#sceneC)">
+    <path d="M944 279 L1001 214 L1044 253 L1082 196 L1140 279Z" fill="#78afb3"/>
+    <circle cx="1073" cy="177" r="15" fill="#e47b68"/>
+    <path d="M944 279 H1140" stroke="#27324a" stroke-width="3"/>
+  </g>
+  <path d="M808 260 C875 232 926 261 972 223 C1012 190 1058 205 1104 164" fill="none" stroke="#27324a" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="808" cy="260" r="7" fill="#4faeb8"/>
+  <circle cx="972" cy="223" r="7" fill="#e47b68"/>
+  <circle cx="1104" cy="164" r="7" fill="#4faeb8"/>
+
+  <!-- restrained co-evolution markers on the harness -->
+  <circle cx="206" cy="160" r="8" fill="#e47b68"/>
+  <circle cx="994" cy="360" r="8" fill="#4faeb8"/>
+</svg>
