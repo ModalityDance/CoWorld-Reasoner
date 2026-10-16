@@ -194,7 +194,7 @@ The supervisor inspects completed interactions, revises the harness, and evaluat
 candidates at each stage before carrying the selected candidate into the next stage.
 
 > [!NOTE]
-> Co-evolution updates the harness in this checkout. Subsequent evaluation uses the selected harness.
+> In this example, co-evolution starts from the released harness and updates the local copy for subsequent evaluation.
 
 Candidate harnesses, execution records, and scores are saved in the output directory.
 Resume an interrupted run with `--resume`.
@@ -222,13 +222,8 @@ print(record["stage_output"])
 
 ## ✨ How It Works <span id="how-it-works"></span>
 
-1. **Assess the need for visual evidence.** The VLM inspects the question and observed images, using skills to decide whether a VWM can provide useful missing evidence.
-2. **Request and interpret visual imagination.** The agent selects view change, temporal interpolation, sequence continuation, or intervention, constructs a generation request, and reads the generated frames with verifier feedback.
-3. **Integrate evidence and answer.** The VLM combines the original observations with the generated evidence to infer the answer.
-
-**VLM–VWM Harness Co-Evolution** improves this process on development data. A supervisor
-revises tools, skills, and execution code from completed interactions, evaluates candidates
-stage by stage, and carries the selected harness and histories forward. Both model weights remain fixed.
+1. **Video World Model-Driven Harness.** Tools expose visual operations, while skills guide the agent in deciding when to generate, constructing requests, and interpreting visual evidence to answer the question.
+2. **VLM–VWM Harness Co-Evolution.** A supervisor uses execution feedback to revise tools, skills, and execution code, passing the selected harness and histories to the next stage while keeping both model weights fixed.
 
 <div align="center">
   <a href="./docs/assets/method.svg"><img src="./docs/assets/method.svg" alt="CoWorld Reasoner's VWM-driven tools and skills, four reasoning stages, and supervisor-guided harness co-evolution." width="100%"></a>

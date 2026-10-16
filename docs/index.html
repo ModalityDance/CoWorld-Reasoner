@@ -521,7 +521,7 @@
           <span class="link-label">Paper</span>
         </a>
         <a class="btn" href="https://huggingface.co/papers/2610.21910">
-          <span class="link-icon" aria-hidden="true">🤗</span>
+          <svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5c-3-2-6-2-10-1v15c4-1 7-1 10 1 3-2 6-2 10-1V4c-4-1-7-1-10 1Z M12 5v15"/></svg>
           <span class="link-label">HF Paper</span>
         </a>
         <a class="btn" href="https://huggingface.co/datasets/ModalityDance/CoWorld-Reasoner-Dev">
@@ -533,7 +533,7 @@
           <span class="link-label">GitHub</span>
         </a>
         <a class="btn" href="#demonstrations">
-          <svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5c-3-2-6-2-10-1v15c4-1 7-1 10 1 3-2 6-2 10-1V4c-4-1-7-1-10 1Z M12 5v15"/></svg>
+          <svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m10 8 6 4-6 4Z"/></svg>
           <span class="link-label">Demonstrations</span>
         </a>
         <a class="btn" href="#method">
@@ -652,16 +652,13 @@
     <section id="method">
       <h2>Method</h2>
       <div class="card">
-        <p>VWM-driven tools provide visual operations, while VWM-driven skills guide skill-loading, tool-use, request construction, and video interpretation.</p>
         <ol>
-          <li><strong>Capability boundary assessment.</strong> Inspect the question and observed images to determine whether the VWM can supply useful missing evidence.</li>
-          <li><strong>Request VWM assistance.</strong> Select view change, temporal interpolation, sequence continuation, or intervention, then construct a request for the VWM.</li>
-          <li><strong>Video interpretation.</strong> Read the generated frames and verify the requested transformation.</li>
-          <li><strong>Evidence integration and reasoning.</strong> Combine the original observations with generated evidence to infer the answer.</li>
+          <li><strong>Video World Model-Driven Harness.</strong> Tools expose visual operations, while skills guide the agent in deciding when to generate, constructing requests, and interpreting visual evidence to answer the question.</li>
+          <li><strong>VLM–VWM Harness Co-Evolution.</strong> A supervisor uses execution feedback to revise tools, skills, and execution code, passing the selected harness and histories to the next stage while keeping both model weights fixed.</li>
         </ol>
         <figure>
           <a class="figure-link" href="./assets/method.svg"><img src="./assets/method.svg" alt="CoWorld Reasoner uses VWM-driven tools and skills to obtain visual evidence, while a supervisor revises the harness across four stages." loading="lazy"></a>
-          <figcaption>VWM-driven tools and skills support visual evidence; a supervisor revises the harness across four stages.</figcaption>
+          <figcaption>Overview of the Video World Model-Driven Harness and VLM–VWM Harness Co-Evolution.</figcaption>
         </figure>
       </div>
     </section>
