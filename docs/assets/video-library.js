@@ -2,99 +2,89 @@ window.COWORLD_VIDEOS = [
   {
     id: "SPIN-0036",
     category: "View change",
-    source: "./assets/videos/043_SPIN-0036.mp4",
-    poster: "./assets/video-posters/043_SPIN-0036.jpg",
-    overview: "./assets/video-overviews/043_SPIN-0036.png",
+    source: "./assets/videos/SPIN-0036.mp4",
+    poster: "./assets/video-posters/SPIN-0036.jpg",
     inputs: [
-      "./assets/video-inputs/spin-0036/00_00_cars_rotation_e440cdbe67.jpg",
+      "./assets/video-inputs/spin-0036/front.jpg",
       "./assets/video-inputs/spin-0036/view-c.jpg"
     ]
   },
   {
     id: "MMSI-0004",
     category: "Interpolation",
-    source: "./assets/videos/007_MMSI-0004.mp4",
-    poster: "./assets/video-posters/007_MMSI-0004.jpg",
-    overview: "./assets/video-overviews/007_MMSI-0004.png",
+    source: "./assets/videos/MMSI-0004.mp4",
+    poster: "./assets/video-posters/MMSI-0004.jpg",
     inputs: [
-      "./assets/video-inputs/mmsi-0004/00_frame_1.jpg",
-      "./assets/video-inputs/mmsi-0004/01_frame_2.jpg"
+      "./assets/video-inputs/mmsi-0004/frame-1.jpg",
+      "./assets/video-inputs/mmsi-0004/frame-2.jpg"
     ]
   },
   {
     id: "CS-COMP-3850AF8D19BE",
     category: "Continuation",
-    source: "./assets/videos/029_CS-COMP-3850AF8D19BE.mp4",
-    poster: "./assets/video-posters/029_CS-COMP-3850AF8D19BE.jpg",
-    overview: "./assets/video-overviews/029_CS-COMP-3850AF8D19BE.png",
-    inputs: ["./assets/video-inputs/cs-comp-3850af8d19be/00_image.png"]
+    source: "./assets/videos/CS-COMP-3850AF8D19BE.mp4",
+    poster: "./assets/video-posters/CS-COMP-3850AF8D19BE.jpg",
+    inputs: ["./assets/video-inputs/cs-comp-3850af8d19be/input.png"]
   },
   {
     id: "CS-OCCL-8833CFBDF3AC",
     category: "Intervention",
-    source: "./assets/videos/042_CS-OCCL-8833CFBDF3AC.mp4",
-    poster: "./assets/video-posters/042_CS-OCCL-8833CFBDF3AC.jpg",
-    overview: "./assets/video-overviews/042_CS-OCCL-8833CFBDF3AC.png",
-    inputs: ["./assets/video-inputs/cs-occl-8833cfbdf3ac/00_image.png"]
+    source: "./assets/videos/CS-OCCL-8833CFBDF3AC.mp4",
+    poster: "./assets/video-posters/CS-OCCL-8833CFBDF3AC.jpg",
+    inputs: ["./assets/video-inputs/cs-occl-8833cfbdf3ac/input.png"]
   },
   {
     id: "MMSI-0034",
     category: "Intervention",
-    source: "./assets/videos/047_MMSI-0034.mp4",
-    poster: "./assets/video-posters/047_MMSI-0034.jpg",
-    overview: "./assets/video-overviews/047_MMSI-0034.png",
+    source: "./assets/videos/MMSI-0034.mp4",
+    poster: "./assets/video-posters/MMSI-0034.jpg",
     inputs: [
-      "./assets/video-inputs/mmsi-0034/00_frame_1.jpg",
-      "./assets/video-inputs/mmsi-0034/01_frame_2.jpg"
+      "./assets/video-inputs/mmsi-0034/frame-1.jpg",
+      "./assets/video-inputs/mmsi-0034/frame-2.jpg"
     ]
   },
   {
     id: "MMSI-0040",
     category: "View change",
-    source: "./assets/videos/011_MMSI-0040.mp4",
-    poster: "./assets/video-posters/011_MMSI-0040.jpg",
-    overview: "./assets/video-overviews/011_MMSI-0040.png",
+    source: "./assets/videos/MMSI-0040.mp4",
+    poster: "./assets/video-posters/MMSI-0040.jpg",
     inputs: [
-      "./assets/video-inputs/mmsi-0040/00_frame_1.jpg",
-      "./assets/video-inputs/mmsi-0040/01_frame_2.jpg"
+      "./assets/video-inputs/mmsi-0040/frame-1.jpg",
+      "./assets/video-inputs/mmsi-0040/frame-2.jpg"
     ]
   },
   {
     id: "MMSI-0010",
     category: "View change",
-    source: "./assets/videos/002_MMSI-0010.mp4",
-    poster: "./assets/video-posters/002_MMSI-0010.jpg",
-    overview: "./assets/video-overviews/002_MMSI-0010.png",
+    source: "./assets/videos/MMSI-0010.mp4",
+    poster: "./assets/video-posters/MMSI-0010.jpg",
     inputs: [
-      "./assets/video-inputs/mmsi-0010/00_frame_1.jpg",
-      "./assets/video-inputs/mmsi-0010/01_frame_2.jpg"
+      "./assets/video-inputs/mmsi-0010/frame-1.jpg",
+      "./assets/video-inputs/mmsi-0010/frame-2.jpg"
     ]
   },
   {
     id: "MMSI-0041",
     category: "View change",
-    source: "./assets/videos/058_MMSI-0041.mp4",
-    poster: "./assets/video-posters/058_MMSI-0041.jpg",
-    overview: "./assets/video-overviews/058_MMSI-0041.png",
+    source: "./assets/videos/MMSI-0041.mp4",
+    poster: "./assets/video-posters/MMSI-0041.jpg",
     inputs: [
-      "./assets/video-inputs/mmsi-0041/00_frame_1.jpg",
-      "./assets/video-inputs/mmsi-0041/01_frame_2.jpg"
+      "./assets/video-inputs/mmsi-0041/frame-1.jpg",
+      "./assets/video-inputs/mmsi-0041/frame-2.jpg"
     ]
   },
   {
     id: "CS-OCCL-F21E9C7F1C66",
     category: "Intervention",
-    source: "./assets/videos/001_CS-OCCL-F21E9C7F1C66.mp4",
-    poster: "./assets/video-posters/001_CS-OCCL-F21E9C7F1C66.jpg",
-    overview: "./assets/video-overviews/001_CS-OCCL-F21E9C7F1C66.png",
-    inputs: ["./assets/video-inputs/cs-occl-f21e9c7f1c66/00_image.png"]
+    source: "./assets/videos/CS-OCCL-F21E9C7F1C66.mp4",
+    poster: "./assets/video-posters/CS-OCCL-F21E9C7F1C66.jpg",
+    inputs: ["./assets/video-inputs/cs-occl-f21e9c7f1c66/input.png"]
   },
   {
     id: "MMSI-0048",
     category: "Interpolation",
-    source: "./assets/videos/048_MMSI-0048.mp4",
-    poster: "./assets/video-posters/048_MMSI-0048.jpg",
-    overview: "./assets/video-overviews/048_MMSI-0048.png",
+    source: "./assets/videos/MMSI-0048.mp4",
+    poster: "./assets/video-posters/MMSI-0048.jpg",
     inputs: [
       "./assets/video-inputs/mmsi-0048/01.jpg",
       "./assets/video-inputs/mmsi-0048/02.jpg"
