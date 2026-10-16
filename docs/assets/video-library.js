@@ -7,7 +7,7 @@ window.COWORLD_VIDEOS = [
     overview: "./assets/video-overviews/043_SPIN-0036.png",
     inputs: [
       "./assets/video-inputs/spin-0036/00_00_cars_rotation_e440cdbe67.jpg",
-      "./assets/video-inputs/spin-0036/02_02_cars_rotation_a99108252e.jpg"
+      "./assets/video-inputs/spin-0036/view-c.jpg"
     ]
   },
   {
