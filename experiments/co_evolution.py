@@ -15,7 +15,7 @@ import time
 from collections import deque
 from pathlib import Path
 from typing import Any
-from harness_state import EXPERIMENT_FILES
+from util.harness_state import EXPERIMENT_FILES
 
 
 STAGES = ("P1", "P2", "P3", "P4")
@@ -75,7 +75,7 @@ class CommandFailed(RuntimeError):
 
 
 def _run(command: list[str], *, cwd: Path) -> dict[str, Any]:
-    label = Path(command[1]).name if len(command) > 1 else Path(command[0]).name
+    label = command[2] if len(command) > 2 and command[1] == "-m" else Path(command[1] if len(command) > 1 else command[0]).name
     started = time.monotonic()
     print(f"[co-evolution] {label} started", flush=True)
     messages: queue.Queue[str | None] = queue.Queue()
@@ -159,7 +159,7 @@ def _stage_command(
 ) -> list[str]:
     command = [
         sys.executable,
-        str(root / "execution.py"),
+        "-m", "runtime.execution",
         "--stage", stage,
         "--input-jsonl", str(input_jsonl),
         "--input-root", str(input_root),
@@ -183,7 +183,7 @@ def _scorer_command(
 ) -> list[str]:
     return [
         sys.executable,
-        str(root / "external_scorer.py"),
+        "-m", "experiments.external_scorer",
         "--candidate-dir", str(candidate_dir),
         "--public-jsonl", str(public_jsonl),
         "--evaluator-jsonl", str(evaluator_jsonl),
@@ -193,18 +193,18 @@ def _scorer_command(
 
 
 def _write_state(path: Path, state: dict[str, Any]) -> None:
-    from execution import _write
+    from runtime.execution import _write
     _write(path, state)
 
 
 def _restore_selected_harness(root: Path, candidate_dir: Path, backup_dir: Path) -> None:
     """Install the selected candidate's harness for subsequent execution."""
-    from harness_state import restore_harness
+    from util.harness_state import restore_harness
     restore_harness(root, candidate_dir, backup_dir, resume=True)
 
 
 def run(args: argparse.Namespace) -> dict[str, Any]:
-    root = Path(__file__).resolve().parent
+    root = Path(__file__).resolve().parents[1]
     env_file = args.env_file if args.env_file.is_absolute() else root / args.env_file
     _read_env_file(env_file)
     from runtime.vwm_harness.codex_session import require_codex
@@ -224,7 +224,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     if positions != list(range(positions[0], positions[0] + len(positions))):
         raise ValueError("stages_must_be_contiguous_and_in_order")
     if "P2" in stages:
-        from execution import _require_live_backend
+        from runtime.execution import _require_live_backend
         _require_live_backend("P2")
     if stages[0] == "P1" and args.initial_upstream is not None:
         raise ValueError("initial_upstream_is_only_valid_when_starting_after_P1")
@@ -248,7 +248,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             raise FileNotFoundError(f"evaluator_jsonl_missing:{evaluator_jsonl}")
         if not _same_population(input_jsonl, evaluator_jsonl):
             raise ValueError("public_and_evaluator_population_mismatch")
-    from execution import _api_config, _public_rows, _row_paths, _resume_identity
+    from runtime.execution import _api_config, _public_rows, _row_paths, _resume_identity
     _api_config()
     rows = _public_rows(input_jsonl, input_root)
     media = {}
@@ -315,7 +315,7 @@ def main() -> int:
         raise SystemExit(f"max_revisions_must_be_between_0_and_{MAX_REVISION_ROUNDS}")
     try:
         from runtime.workflow_lock import workflow_lock
-        with workflow_lock(Path(__file__).resolve().parent):
+        with workflow_lock(Path(__file__).resolve().parents[1]):
             result = run(args)
     except Exception as exc:
         print(json.dumps({"status": "failed", "error": f"{type(exc).__name__}:{exc}"}, ensure_ascii=False))

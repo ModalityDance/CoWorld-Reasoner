@@ -17,7 +17,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def _resume_identity(identity: dict[str, Any]) -> dict[str, Any]:
@@ -379,7 +379,7 @@ def main() -> int:
     else:
         _write(identity_path, identity)
     # Restore selected code before importing the task runtime.
-    from harness_state import restore_harness, save_harness
+    from util.harness_state import restore_harness, save_harness
     if upstream:
         upstream_config = json.loads((upstream / "RUN_CONFIG.json").read_text(encoding="utf-8"))
         if upstream_config.get("stage") != f"P{int(args.stage[1]) - 1}":
@@ -401,7 +401,7 @@ def main() -> int:
                 raise ValueError(f"upstream_history_missing:{prior['sample_id']}")
     if not (output / "harness").exists():
         save_harness(ROOT, output)
-    from harness_state import _source_paths
+    from util.harness_state import _source_paths
     if {p.relative_to(ROOT) for p in _source_paths(ROOT)} != {p.relative_to(output / "harness") for p in _source_paths(output / "harness")}:
         raise ValueError("resume_harness_file_set_changed_use_new_output_dir")
     for saved in _source_paths(output / "harness"):

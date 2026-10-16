@@ -4,7 +4,7 @@ from __future__ import annotations
 import difflib
 from pathlib import Path
 
-from harness_state import _source_paths, EXPERIMENT_FILES
+from util.harness_state import _source_paths, EXPERIMENT_FILES
 
 
 def component_for_path(path: str) -> str:
@@ -26,7 +26,7 @@ def component_for_path(path: str) -> str:
     if normalized in {"runtime/visual_dispatch.py", "runtime/generation_execution.py",
                       "runtime/request_media.py"}:
         return "tools"
-    if normalized.startswith("runtime/") or normalized == "execution.py":
+    if normalized.startswith("runtime/"):
         return "execution_and_context"
     return "other_task_source"
 
@@ -62,7 +62,7 @@ COMPONENTS = {
     "execution_and_context": (
         "Stage execution, model interaction, ordered media, skill loading/refresh, history "
         "continuation and tool-result delivery. Inspect how each component reaches the model.",
-        ("execution.py", "runtime/agent_runtime.py", "runtime/agents_sdk_input.py",
+        ("runtime/execution.py", "runtime/agent_runtime.py", "runtime/agents_sdk_input.py",
          "runtime/agents_sdk_model.py", "runtime/durable_agent.py", "runtime/media_context.py",
          "runtime/vwm_harness/interaction_history.py")),
 }

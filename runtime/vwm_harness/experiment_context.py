@@ -8,7 +8,7 @@ from pathlib import Path
 import shutil
 import subprocess
 from typing import Any
-from harness_state import _source_paths
+from util.harness_state import _source_paths
 from runtime.vwm_harness.stage_assessment import available_feedback
 from runtime.vwm_harness.supervisor_feedback import preceding_outputs, verifier_observations
 from runtime.vwm_harness.interaction_history import _SKILL_UPDATE_PREFIX
@@ -329,7 +329,7 @@ def case_guidance(candidate: dict, row: dict) -> dict:
     stage = row.get("stage", "P1")
     stage_modules = {"P1": "p1_capability_assessment.py", "P2": "p2_vwm_request.py",
                      "P3": "p3_video_interpretation.py", "P4": "p4_evidence_integration.py"}
-    paths = ["evolved_harness/" + stage_modules[stage], "execution.py",
+    paths = ["evolved_harness/" + stage_modules[stage], "runtime/execution.py",
              "runtime/agent_runtime.py", "runtime/agents_sdk_input.py", "runtime/media_context.py",
              "runtime/vwm_harness/interaction_history.py", "evolved_harness/catalog.py"]
     if stage in {"P1", "P2"}:

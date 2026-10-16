@@ -4,6 +4,8 @@
   <img src="./docs/assets/coworld-reasoner-icon.png" alt="CoWorld Reasoner" width="150">
   <h1>CoWorld Reasoner: Agentic Multimodal Reasoning with the Evolving Video World Model-Driven Harness</h1>
   <a href="https://modalitydance.github.io/CoWorld-Reasoner/"><img src="https://img.shields.io/badge/Project-Page-6a5acd?style=for-the-badge" alt="Project Page"></a>
+  <a href="https://arxiv.org/abs/2610.21910"><img src="https://img.shields.io/badge/Paper-b31b1b?style=for-the-badge&logo=arxiv" alt="Paper"></a>
+  <a href="https://huggingface.co/papers/2610.21910"><img src="https://img.shields.io/badge/Hugging%20Face-Paper-fcc21b?style=for-the-badge&logo=huggingface&logoColor=white" alt="Hugging Face Paper"></a>
   <a href="https://huggingface.co/datasets/ModalityDance/CoWorld-Reasoner-Dev"><img src="https://img.shields.io/badge/Hugging%20Face-Data-fcc21b?style=for-the-badge&logo=huggingface&logoColor=white" alt="Hugging Face Data"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License"></a>
 </div>
@@ -25,6 +27,11 @@ feedback while keeping the weights of both models fixed.
   <p><em>Thinking beyond observed images through video world models.</em></p>
 </div>
 
+## 🔥 News
+
+- **[2026.10]** Our [paper](https://arxiv.org/abs/2610.21910) is now available on arXiv.
+- **[2026.10]** Released the code, evolved harness, and [development data](https://huggingface.co/datasets/ModalityDance/CoWorld-Reasoner-Dev).
+
 ## 📑 Table of Contents
 
 - [🚀 Quick Start](#quick-start)
@@ -32,11 +39,13 @@ feedback while keeping the weights of both models fixed.
   - [2. Data](#data)
   - [3. Running](#running)
     - [Evolved harness](#evolved-harness)
-    - [Co-evolution](#co-evolution)
     - [Evaluation](#evaluation)
+    - [Co-evolution](#co-evolution)
+- [🧪 Usage Example](#usage-example)
 - [✨ How It Works](#how-it-works)
 - [🌱 Acknowledgements](#acknowledgements)
   - [🔗 Related Projects](#related-projects)
+- [📚 Citation](#citation)
 
 ## 🚀 Quick Start <span id="quick-start"></span>
 
@@ -67,9 +76,11 @@ Copy `.env.example` to `.env` and set:
 | `AGENTIC_VLM_MODEL` | Your model deployment |
 | `FAL_KEY` | Your FAL API key for MiniMax H3 Max Turbo |
 
-Use an OpenAI-compatible endpoint with the Responses API, image input, function
-calling, and structured JSON output. The answer judge uses the same model and
-endpoint by default; `COEVOLVE_JUDGE_*` settings override them.
+> [!NOTE]
+> Use an OpenAI-compatible endpoint with the Responses API, image input, function calling, and structured JSON output.
+
+The answer judge uses the same model and endpoint by default;
+`COEVOLVE_JUDGE_*` settings override them.
 
 ### 2. Data <span id="data"></span>
 
@@ -80,7 +91,7 @@ contain 30 examples each from MMSI-Bench, SpinBench, CausalSpatial, and Percepti
 with 244 images. Download them from the repository root:
 
 ```shell
-python download_data.py
+python scripts/prepare/download.py
 ```
 
 Questions are in `data/dev120/public.jsonl`; reference answers are in
@@ -137,8 +148,8 @@ SpatiaLab Open uses semantic-equivalence judging.
 
 #### Evolved harness <span id="evolved-harness"></span>
 
-Evaluation uses the released `evolved_harness/`. Co-evolution starts from the
-same harness and writes the selected result into its output directory.
+> [!TIP]
+> Start with the released `evolved_harness/` using Evaluation below. Co-evolution is optional.
 
 The harness contains the reusable skills, stage guidance, visual tools, and
 verifier; `runtime/` carries ordered histories and media between stages.
@@ -146,42 +157,22 @@ verifier; `runtime/` carries ordered histories and media between stages.
 By default, each task can make one VWM generation request. `--retakes 1` allows
 one additional attempt for the same operation.
 
-#### Co-evolution <span id="co-evolution"></span>
-
-Run co-evolution on Dev120:
-
-```shell
-python co_evolution.py --input-jsonl data/dev120/public.jsonl --input-root data/dev120 --output-root runs/coevolve --env-file .env
-```
-
-The default is three rounds, with up to five revisions per stage and early stopping.
-Use `--evolution-rounds 1` for one complete round.
-
-The supervisor uses Codex to inspect completed interactions and revise skills, stage
-instructions, tool and verifier guidance, and execution code. It evaluates candidate
-revisions at each stage, retains the selected candidate, and carries it into the next
-stage.
-
-The output directory contains stage records, generated media, scores, and
-`RUN_RESULT.json`. Resume an interrupted run with `--resume`.
-
 #### Evaluation <span id="evaluation"></span>
 
 Evaluate all 120 development examples with the evolved harness:
 
 ```shell
-python evaluate.py --input-jsonl data/dev120/public.jsonl --input-root data/dev120 --output-root runs/eval --env-file .env
+python -m experiments.evaluate --input-jsonl data/dev120/public.jsonl --input-root data/dev120 --output-root runs/eval --env-file .env
 ```
 
 Development examples are scored using the downloaded reference answers. For other
 benchmarks, supply a reference-answer JSONL file:
 
 ```shell
-python evaluate.py --input-jsonl data/benchmarks/mmsi/public.jsonl --input-root data/benchmarks/mmsi --evaluator-jsonl data/benchmarks/mmsi/evaluator.jsonl --output-root runs/mmsi --env-file .env
+python -m experiments.evaluate --input-jsonl data/benchmarks/mmsi/public.jsonl --input-root data/benchmarks/mmsi --evaluator-jsonl data/benchmarks/mmsi/evaluator.jsonl --output-root runs/mmsi --env-file .env
 ```
 
-After co-evolution, evaluation uses the selected harness. Reference answers are
-optional for custom inputs; provide them to compute scores.
+Reference answers are optional for custom inputs; provide them to compute scores.
 
 Final answers are in `p4/records.jsonl`; `p4/SCORING.json` contains per-sample
 scores and aggregate accuracy. The paper's overall average is item-weighted:
@@ -190,7 +181,54 @@ sum correct counts across all eight evaluation columns and divide by their total
 Set `--workers N` to adjust concurrency. Use a new output directory when changing
 the input or model configuration; see `--help` for the available options.
 
+#### Co-evolution <span id="co-evolution"></span>
+
+To further evolve the harness on development data:
+
+```shell
+python -m experiments.co_evolution --input-jsonl data/dev120/public.jsonl --input-root data/dev120 --output-root runs/coevolve --env-file .env
+```
+
+The default is three rounds. Use `--evolution-rounds 1` for one complete round.
+The supervisor inspects completed interactions, revises the harness, and evaluates
+candidates at each stage before carrying the selected candidate into the next stage.
+
+> [!NOTE]
+> Co-evolution updates the harness in this checkout. Subsequent evaluation uses the selected harness.
+
+Candidate harnesses, execution records, and scores are saved in the output directory.
+Resume an interrupted run with `--resume`.
+
+## 🧪 Usage Example <span id="usage-example"></span>
+
+Try one development example from Python after configuring `.env` and downloading the data:
+
+```python
+import json
+from pathlib import Path
+
+from experiments.evaluate import evaluate
+
+task = Path("data/dev120/public.jsonl").read_text(encoding="utf-8").splitlines()[0]
+input_file = Path("runs/example/input.jsonl")
+input_file.parent.mkdir(parents=True, exist_ok=True)
+input_file.write_text(task + "\n", encoding="utf-8")
+
+evaluate(input_file, "data/dev120", "runs/example/eval")
+
+record = json.loads(Path("runs/example/eval/p4/records.jsonl").read_text(encoding="utf-8"))
+print(record["stage_output"])
+```
+
 ## ✨ How It Works <span id="how-it-works"></span>
+
+1. **Assess the need for visual evidence.** The VLM inspects the question and observed images, using skills to decide whether a VWM can provide useful missing evidence.
+2. **Request and interpret visual imagination.** The agent selects view change, temporal interpolation, sequence continuation, or intervention, constructs a generation request, and reads the generated frames with verifier feedback.
+3. **Integrate evidence and answer.** The VLM combines the original observations with the generated evidence to infer the answer.
+
+**VLM–VWM Harness Co-Evolution** improves this process on development data. A supervisor
+revises tools, skills, and execution code from completed interactions, evaluates candidates
+stage by stage, and carries the selected harness and histories forward. Both model weights remain fixed.
 
 <div align="center">
   <a href="./docs/assets/method.svg"><img src="./docs/assets/method.svg" alt="CoWorld Reasoner's VWM-driven tools and skills, four reasoning stages, and supervisor-guided harness co-evolution." width="100%"></a>
@@ -221,6 +259,22 @@ datasets, and dependencies retain their own licenses.
 [![Omni-R1](https://img.shields.io/badge/Omni--R1-Paper-527f99)](https://aclanthology.org/2026.findings-acl.1937/)
 [![MindJourney](https://img.shields.io/badge/MindJourney-Paper-527f99)](https://papers.nips.cc/paper_files/paper/2025/file/9e3b203e72c4e058de26d02a92a81844-Paper-Conference.pdf)
 [![AVIC](https://img.shields.io/badge/AVIC-Paper-527f99)](https://arxiv.org/abs/2602.08236v2)
+
+## 📚 Citation <span id="citation"></span>
+
+Please cite our paper as:
+
+```bibtex
+@misc{cheng2026coworldreasoner,
+  title  = {CoWorld Reasoner: Agentic Multimodal Reasoning with the Evolving Video World Model-Driven Harness},
+  author = {Dongjie Cheng and Ruifeng Yuan and Ran Wei and Ning Song and Yongqi Li and Wenjie Li},
+  year   = {2026},
+  eprint = {2610.21910},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.AI},
+  url    = {https://arxiv.org/abs/2610.21910}
+}
+```
 
 <div align="center">
   <a href="https://github.com/ModalityDance/CoWorld-Reasoner"><img src="https://img.shields.io/badge/Star_us_on_GitHub-181717?style=for-the-badge&logo=github" alt="Star on GitHub"></a>

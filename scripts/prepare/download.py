@@ -47,4 +47,4 @@ def save_data(dataset, root: Path) -> None:
 
 
 if __name__ == "__main__":
-    save_data(load_dataset(DATASET_ID, split="train"), Path(__file__).resolve().parent)
+    save_data(load_dataset(DATASET_ID, split="train"), Path(__file__).resolve().parents[2])

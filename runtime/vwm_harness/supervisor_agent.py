@@ -9,11 +9,11 @@ from pathlib import Path
 import shutil
 import sys
 
-from harness_state import (
+from util.harness_state import (
     save_harness, editable_scope, validate_revision, install_source_file,
     remove_source_file, restore_harness, _source_paths,
 )
-from execution import _write
+from runtime.execution import _write
 from runtime.model_config import shared_vlm_model, live_api_key, default_live_base_url
 from runtime.vwm_harness.codex_session import CodexSession, ToolResponse
 from runtime.vwm_harness.candidate_evaluation import candidate_record, validate_candidates
@@ -146,7 +146,7 @@ class EvolutionExperiment:
             self.execute_pending()
 
     def execute_pending(self) -> None:
-        from co_evolution import _restore_selected_harness, _stage_command, _scorer_command, _run_candidate_with_retries, _run
+        from experiments.co_evolution import _restore_selected_harness, _stage_command, _scorer_command, _run_candidate_with_retries, _run
         pending = self.state["pending"]
         if not pending:
             return
@@ -367,7 +367,7 @@ class EvolutionExperiment:
         else:
             self.state["status"] = "completed"
             self.state["final_candidate_dir"] = selected["candidate_dir"]
-            from co_evolution import _restore_selected_harness
+            from experiments.co_evolution import _restore_selected_harness
             _restore_selected_harness(self.root, Path(selected["candidate_dir"]), self.output / "final_snapshot")
         self.save()
 

@@ -79,7 +79,7 @@ def _same_population(left: Path, right: Path) -> bool:
 
 
 def _run_evaluation(args: argparse.Namespace) -> dict[str, Any]:
-    root = Path(__file__).resolve().parent
+    root = Path(__file__).resolve().parents[1]
     _load_env((args.env_file if args.env_file.is_absolute() else root / args.env_file).resolve())
     input_jsonl = args.input_jsonl.resolve()
     input_root = args.input_root.resolve()
@@ -88,7 +88,7 @@ def _run_evaluation(args: argparse.Namespace) -> dict[str, Any]:
     os.environ["AGENTIC_MAX_RETAKES"] = str(retakes)
     if output_root.exists() and any(output_root.iterdir()) and not getattr(args, "resume", False):
         raise ValueError(f"output_root_must_be_new_or_empty:{output_root}")
-    from execution import _api_config, _public_rows, _row_paths, _require_live_backend
+    from runtime.execution import _api_config, _public_rows, _row_paths, _require_live_backend
     for row in _public_rows(input_jsonl, input_root):
         _row_paths(row)
     _require_live_backend("P2")
@@ -121,7 +121,7 @@ def _run_evaluation(args: argparse.Namespace) -> dict[str, Any]:
         output_dir = output_root / stage.lower()
         command = [
             sys.executable,
-            str(root / "execution.py"),
+            "-m", "runtime.execution",
             "--stage", stage,
             "--input-jsonl", str(input_jsonl),
             "--input-root", str(input_root),
@@ -148,7 +148,7 @@ def _run_evaluation(args: argparse.Namespace) -> dict[str, Any]:
             raise FileNotFoundError(f"evaluator_jsonl_missing:{evaluator}")
         command = [
             sys.executable,
-            str(root / "external_scorer.py"),
+            "-m", "experiments.external_scorer",
             "--candidate-dir", str(upstream),
             "--public-jsonl", str(input_jsonl),
             "--evaluator-jsonl", str(evaluator),
@@ -169,8 +169,24 @@ def run_evaluation(args: argparse.Namespace) -> dict[str, Any]:
     """Evaluate the current harness with exclusive access to its source tree."""
     from runtime.workflow_lock import workflow_lock
 
-    with workflow_lock(Path(__file__).resolve().parent):
+    with workflow_lock(Path(__file__).resolve().parents[1]):
         return _run_evaluation(args)
+
+
+def evaluate(
+    input_jsonl: str | Path, input_root: str | Path, output_root: str | Path, *,
+    env_file: str | Path = ".env", evaluator_jsonl: str | Path | None = None,
+    workers: int = 4, retakes: int = 0, resume: bool = False,
+    stage_retries: int = 2, timeout_sec: int = 180,
+) -> dict[str, Any]:
+    """Run all reasoning stages and score answers when references are supplied."""
+    if retakes not in (0, 1):
+        raise ValueError("retakes_must_be_0_or_1")
+    return run_evaluation(argparse.Namespace(
+        input_jsonl=Path(input_jsonl), input_root=Path(input_root), output_root=Path(output_root),
+        env_file=Path(env_file), evaluator_jsonl=Path(evaluator_jsonl) if evaluator_jsonl is not None else None,
+        workers=workers, retakes=retakes, resume=resume, stage_retries=stage_retries, timeout_sec=timeout_sec,
+    ))
 
 
 def main() -> int:
@@ -193,7 +209,7 @@ def main() -> int:
     )
     args = parser.parse_args()
     try:
-        result = run_evaluation(args)
+        result = evaluate(**vars(args))
     except Exception as exc:
         print(json.dumps({"status": "failed", "error": f"{type(exc).__name__}:{exc}"}, ensure_ascii=False))
         return 1

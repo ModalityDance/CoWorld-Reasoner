@@ -8,8 +8,9 @@ from pathlib import Path
 
 
 EXPERIMENT_FILES = frozenset({
-    "harness_state.py", "co_evolution.py", "evaluate.py", "download_data.py",
-    "external_scorer.py",
+    "util/harness_state.py", "util/__init__.py", "experiments/__init__.py",
+    "experiments/co_evolution.py", "experiments/evaluate.py",
+    "scripts/prepare/download.py", "experiments/external_scorer.py",
     "runtime/vwm_harness/codex_session.py",
     "runtime/vwm_harness/experiment_context.py",
     "runtime/vwm_harness/supervisor_agent.py",
@@ -28,7 +29,7 @@ def is_source_path(relative: Path) -> bool:
         return False
     if relative.suffix in {".pyc", ".pyo"}:
         return False
-    return relative.parts[0] in {"runtime", "evolved_harness"} or (
+    return relative.parts[0] in {"runtime", "evolved_harness", "experiments", "util", "scripts"} or (
         len(relative.parts) == 1 and relative.suffix == ".py"
     )
 
@@ -36,7 +37,7 @@ def is_source_path(relative: Path) -> bool:
 def editable_scope() -> dict:
     """Describe task implementation boundaries, independent of stage or function."""
     return {
-        "task_source": ["evolved_harness/", "runtime/", "top-level Python modules"],
+        "task_source": ["evolved_harness/", "runtime/", "util/"],
         "experiment_files": sorted(EXPERIMENT_FILES),
         "file_operations": ["modify", "add", "delete", "rename"],
     }
@@ -57,7 +58,8 @@ def validate_revision(root: Path, relative: str, content: bytes | None) -> None:
 
 def _source_paths(root: Path) -> list[Path]:
     paths = list(root.glob("*.py"))
-    for directory in (root / "runtime", root / "evolved_harness"):
+    for name in ("runtime", "evolved_harness", "experiments", "util", "scripts"):
+        directory = root / name
         if directory.is_symlink():
             raise ValueError(f"source_symlink:{directory}")
         paths.extend(directory.rglob("*"))

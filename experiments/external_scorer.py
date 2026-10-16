@@ -149,7 +149,7 @@ def score_candidate(
         "accuracy": len(correct) / len(evaluator_rows) if complete else None,
         "results": results,
     }
-    from execution import _atomic_text
+    from runtime.execution import _atomic_text
     summary_text = json.dumps(summary, ensure_ascii=False, indent=2) + "\n"
     if not summary_path.is_file() or summary_path.read_text(encoding="utf-8") != summary_text:
         _atomic_text(summary_path, summary_text)
