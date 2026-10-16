@@ -56,6 +56,9 @@ orchestration, scoring and datasets are fixed run conditions.
 
 experiment_state provides current state and project/evidence locations. The working project
 and conversation persist across stages. Independent answer scores are available at P4.
+After an execution failure, retry unchanged code for a service interruption, submit a repair
+from a completed candidate, or select an earlier completed candidate. Failed revisions count
+toward the stage budget; retrying the same revision does not.
 """
 
 
@@ -79,7 +82,7 @@ TOOLS = [
     _tool("retry_execution", "Resume a pending execution after service recovery, reusing completed samples and request receipts. This creates no new revision and consumes no revision budget.", {}),
     _tool("inspect_case", INSPECT_CASE_DESCRIPTION, {
         "candidate_ids": {**IDS, "maxItems": 2}, "sample_id": TEXT}),
-    _tool("run_revision", "Execute the working project's changes relative to the named base candidate on the full stage population from fixed incoming histories. The hypothesis should state the repeated mechanism and transferable method. Returns paired results, source changes and execution evidence so delivery and use can be checked; consumes one revision cycle regardless of how many files changed.", {
+    _tool("run_revision", "Execute the working project's changes relative to the named completed base candidate on the full stage population from fixed incoming histories. May replace a failed pending revision with a repair. The hypothesis should state the repeated mechanism and transferable method. Returns paired results, source changes and execution evidence so delivery and use can be checked; consumes one revision cycle regardless of how many files changed.", {
         "base_candidate_id": TEXT, "hypothesis": TEXT,
         "target_case_ids": {"type": "array", "items": {"type": "string"}, "description": "Optional cases to highlight in the comparison; every sample still reruns."},
         "expected_behavior": TEXT, "preserve_behavior": TEXT},
@@ -107,6 +110,7 @@ class EvolutionExperiment:
                           "candidates": [], "selections": [], "pending": None,
                           "initial_snapshot": str(initial)}
             self.save()
+        self.state.setdefault("failed_executions", [])
 
     @property
     def stage(self) -> str:
@@ -123,6 +127,25 @@ class EvolutionExperiment:
         return next((s for s in self.state["selections"]
                      if s["round"] == self.state["round"] and s["stage"] == self.stage), None)
 
+    def current_failures(self) -> list[dict]:
+        return [item for item in self.state["failed_executions"]
+                if item["evolution_round"] == self.state["round"] and item["stage"] == self.stage]
+
+    def revision_count(self) -> int:
+        revisions = [c["round_index"] for c in self.current_candidates()]
+        revisions.extend(item["revision"] for item in self.current_failures())
+        if self.state["pending"]:
+            revisions.append(self.state["pending"]["revision"])
+        return max(revisions, default=0)
+
+    def _release_failed_execution(self) -> None:
+        pending = self.state["pending"]
+        if pending:
+            if not pending.get("error"):
+                raise ValueError("execution_pending:use_retry_execution_before_revising")
+            self.state["failed_executions"].append(pending)
+            self.state["pending"] = None
+
     def _new_pending(self, revision: int, source: str, experiment: dict | None = None,
                      changes: list[dict] | None = None) -> dict:
         cid = f"{self.args.candidate_id}-e{self.state['round']}-{self.stage.lower()}-r{revision}"
@@ -132,10 +155,12 @@ class EvolutionExperiment:
                 "changes": changes or [], "candidate_dir": str(self.output /
                     f"round_{self.state['round']}" / "runs" / f"{self.stage.lower()}_r{revision}")}
 
-    def ensure_initial(self) -> None:
+    def ensure_initial(self, *, retry: bool = False) -> None:
         if self.state["status"] == "completed":
             return
         if self.state["pending"]:
+            if self.state["pending"].get("error") and self.current_candidates() and not retry:
+                return
             self.execute_pending()
         if not self.current_candidates():
             source = self.state["upstream"] or (
@@ -164,17 +189,22 @@ class EvolutionExperiment:
         command = _stage_command(self.root, pending["stage"], self.args.input_jsonl.resolve(),
             self.args.input_root.resolve(), directory, Path(pending["upstream"]) if pending["upstream"] else None,
             pending["candidate_id"], pending["revision"], self.args.workers)
-        _run_candidate_with_retries(command, cwd=self.root, candidate_dir=directory,
-                                   output_root=self.output, retries=self.args.stage_retries)
-        if pending["stage"] == "P4" and self.args.evaluator_jsonl:
-            _run(_scorer_command(self.root, directory, self.args.input_jsonl.resolve(),
-                 self.args.evaluator_jsonl.resolve(), self.root / "scorer_bundle", self.args.timeout_sec), cwd=self.root)
-        item, records = candidate_record(directory)
-        item.update(evolution_round=pending["evolution_round"], experiment=pending["experiment"],
-                    revision_diff=[{k: v for k, v in c.items() if k != "staged_path"} for c in pending["changes"]],
-                    record_path=str(directory / "records.jsonl"))
-        baselines = prepare_candidate_context(self.output, [item])
-        item["baseline_hashes"] = {p: hashlib.sha256(b).hexdigest() for p, b in baselines[item["candidate_id"]].items()}
+        try:
+            _run_candidate_with_retries(command, cwd=self.root, candidate_dir=directory,
+                                       output_root=self.output, retries=self.args.stage_retries)
+            if pending["stage"] == "P4" and self.args.evaluator_jsonl:
+                _run(_scorer_command(self.root, directory, self.args.input_jsonl.resolve(),
+                     self.args.evaluator_jsonl.resolve(), self.root / "scorer_bundle", self.args.timeout_sec), cwd=self.root)
+            item, records = candidate_record(directory)
+            item.update(evolution_round=pending["evolution_round"], experiment=pending["experiment"],
+                        revision_diff=[{k: v for k, v in c.items() if k != "staged_path"} for c in pending["changes"]],
+                        record_path=str(directory / "records.jsonl"))
+            baselines = prepare_candidate_context(self.output, [item])
+            item["baseline_hashes"] = {p: hashlib.sha256(b).hexdigest() for p, b in baselines[item["candidate_id"]].items()}
+        except Exception as exc:
+            pending["error"] = f"{type(exc).__name__}:{exc}"
+            self.save()
+            raise
         self.state["candidates"].append(item)
         self.state["working_base_candidate_id"] = item["candidate_id"]
         self.state["pending"] = None
@@ -208,7 +238,8 @@ class EvolutionExperiment:
             "python_executable": sys.executable,
             "stage_findings_path": str(self.output / "workspace" / "stage_findings.md"),
             "stage": self.stage, "criteria": STAGE_INSTRUCTIONS[self.stage],
-            "remaining_revisions": self.args.max_revisions - max(0, len(candidates) - 1),
+            "remaining_revisions": self.args.max_revisions - self.revision_count(),
+            "pending": self.state["pending"], "failed_executions": self.current_failures(),
             "upstream": self.state["upstream"], "edit_scope": editable_scope(),
             "candidates": [{k: c.get(k) for k in (
                 "candidate_id", "workspace", "harness_source_dir", "metrics", "population_path", "record_path",
@@ -246,7 +277,9 @@ class EvolutionExperiment:
                 "experiment_history_path": str(self.output / "candidate_history.json"),
                 "stage_findings_path": str(self.output / "workspace" / "stage_findings.md"),
                 "completed_revisions": revisions, "max_revisions": self.args.max_revisions,
-                "remaining_revisions": self.args.max_revisions - revisions,
+                "attempted_revisions": self.revision_count(),
+                "remaining_revisions": self.args.max_revisions - self.revision_count(),
+                "failed_executions": self.current_failures(),
                 "candidates": [{"id": c["candidate_id"], "snapshot": c["harness_source_dir"],
                                 "metrics": c["metrics"]} for c in self.current_candidates()]}
 
@@ -264,7 +297,7 @@ class EvolutionExperiment:
             raise ValueError("experiment_is_not_running")
         if self.current_selection():
             raise ValueError("stage_candidate_already_selected:complete_the_current_goal")
-        if self.state["pending"]:
+        if self.state["pending"] and not self.state["pending"].get("error"):
             raise ValueError("execution_pending:use_retry_execution_before_revising")
         candidates = self.current_candidates()
         base = next((c for c in candidates if c["candidate_id"] == arguments["base_candidate_id"]), None)
@@ -304,9 +337,10 @@ class EvolutionExperiment:
         for candidate in candidates:
             if candidate["baseline_hashes"] == desired:
                 return {"already_executed_candidate_id": candidate["candidate_id"], **self.describe()}
-        if len(candidates) > self.args.max_revisions:
+        revision = self.revision_count() + 1
+        if revision > self.args.max_revisions:
             raise ValueError("stage_revision_budget_exhausted")
-        pending = self._new_pending(len(candidates), base["candidate_dir"], arguments, changes)
+        pending = self._new_pending(revision, base["candidate_dir"], arguments, changes)
         for change in changes:
             if change["operation"] == "delete":
                 continue
@@ -314,6 +348,7 @@ class EvolutionExperiment:
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(workspace / change["path"], target)
             change["staged_path"] = str(target)
+        self._release_failed_execution()
         self.state["pending"] = pending
         self.save()
         self.execute_pending()
@@ -322,7 +357,8 @@ class EvolutionExperiment:
     def select(self, arguments: dict) -> dict:
         if any(s["candidate_id"] == arguments["candidate_id"] for s in self.state["selections"]):
             return self.describe()
-        if self.state["status"] != "running" or self.state["pending"]:
+        if self.state["status"] != "running" or (
+                self.state["pending"] and not self.state["pending"].get("error")):
             raise ValueError("finish_pending_execution_before_selection")
         if self.current_selection():
             raise ValueError("stage_candidate_already_selected:complete_the_current_goal")
@@ -338,6 +374,7 @@ class EvolutionExperiment:
                 raise ValueError(f"selection_requires_{key}")
         restore_harness(self.output / "workspace" / "project", Path(selected["candidate_dir"]),
                         self.output / "source_backups" / "project" / selected["candidate_id"], resume=True)
+        self._release_failed_execution()
         self.state["working_base_candidate_id"] = selected["candidate_id"]
         selection = {**arguments, "stage": self.stage, "round": self.state["round"],
                      "candidate_dir": selected["candidate_dir"]}
@@ -376,7 +413,7 @@ class EvolutionExperiment:
         if name == "experiment_state":
             return self.describe()
         if name == "retry_execution":
-            self.ensure_initial()
+            self.ensure_initial(retry=True)
             return self.describe()
         if name == "inspect_case":
             ids = arguments.get("candidate_ids") or []
